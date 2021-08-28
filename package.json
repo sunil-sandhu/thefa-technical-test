@@ -1,0 +1,11 @@
+{
+  "name": "squad-selector",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {},
+  "author": "Sunil Sandhu",
+  "scripts": {
+    "start": "node server/index.js"
+  }
+}
