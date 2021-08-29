@@ -26,3 +26,15 @@ test("changing formation updates the formation", () => {
   const currentFormation = screen.getByText(/current formation: 451/i);
   expect(currentFormation).toBeInTheDocument();
 });
+
+test("changing formation updates the formation options in the starting lineup", () => {
+  const app = render(<AppWrapper />);
+  const selectFormationButton = screen.getByText(/select formation/i);
+  selectFormationButton.click();
+
+  const formation = screen.getByRole("button", { name: /343/i });
+  formation.click();
+
+  let currentFormation = app.container.querySelectorAll('label[for="F"]');
+  expect(currentFormation.length).toBe(3);
+});

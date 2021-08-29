@@ -6,141 +6,134 @@ import { players } from "./options/players";
 import React, { useState } from "react";
 import Button from "./components/Button";
 import Title from "./components/Title";
-import FormationModal from "./components/FormationModal";
+import { imagesFormations } from "./assets/img/formations/imagesFormations";
+import FormationContainer from "./components/FormationContainer";
 
-const starting = [
-  { position: "G", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "M", player: "" },
-  { position: "M", player: "" },
-  { position: "M", player: "" },
-  { position: "F", player: "" },
-  { position: "F", player: "" },
-  { position: "F", player: "" },
-];
-
-const bench = [
-  { position: "G", player: "" },
-  { position: "G", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "D", player: "" },
-  { position: "M", player: "" },
-  { position: "M", player: "" },
-  { position: "M", player: "" },
-  { position: "M", player: "" },
-  { position: "F", player: "" },
-  { position: "F", player: "" },
-  { position: "F", player: "" },
-  { position: "F", player: "" },
-];
-
-function FormationContainer({ formation, handleSetCurrentFormation }) {
-  const [showModal, setShowModal] = useState(false);
-
-  const updateFormation = (formation) => {
-    handleSetCurrentFormation(formation);
-    setShowModal(false);
-  };
-
-  return (
-    <React.Fragment>
-      <p>Current formation: {formation.title}</p>
-      <img src={formation.image} alt="current formation" />
-
-      <Button title="CHANGE FORMATION" onClickFunc={() => setShowModal(true)} />
-      <FormationModal
-        title="SELECT FORMATION"
-        showModal={showModal}
-        onClickFunc={updateFormation}
-      />
-    </React.Fragment>
-  );
-}
-
-function AvailablePlayers({ players }) {
-  const addPlayer = (player) => {
-    return console.log(`add player ${player.name} clicked`);
-  };
+function AvailablePlayers({ players, addPlayer }) {
   return (
     <React.Fragment>
       <p className="text-strong">Currently available</p>
       <p className="text-strong">Goalkeepers</p>
       {players.goalkeepers.map((player) => (
-        <span>
+        <div key={player.name} className="player">
+          <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
+        </div>
       ))}
       <p className="text-strong">Defenders</p>
       {players.defenders.map((player) => (
-        <span>
+        <div key={player.name} className="player">
+          <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
+        </div>
       ))}
       <p className="text-strong">Midfielders</p>
       {players.midfielders.map((player) => (
-        <span>
+        <div key={player.name} className="player">
+          <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
+        </div>
       ))}
       <p className="text-strong">Forwards</p>
       {players.forwards.map((player) => (
-        <span>
+        <div key={player.name} className="player">
+          <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
+        </div>
       ))}
     </React.Fragment>
   );
 }
 
-function Player({ player }) {
+function Position({ player, formation }) {
+  console.log(player);
   return (
-    <div className="lineup-player">
-      <p>{player.position}</p>
+    <div className="player">
+      <label htmlFor={player}>{player}</label>
+      <input name={player} />
+      {/* <p>{player}</p> */}
     </div>
   );
 }
 
-function ActiveSquad({ formation }) {
-  console.log("do something with " + formation);
+function ActiveSquad({ currentFormation }) {
   return (
     <React.Fragment>
       <p className="text-strong">Starting lineup</p>
-      <section className="lineup">
-        {starting.map((player) => (
-          <Player player={player} />
+      <section className="">
+        {currentFormation.positions.map((player, index) => (
+          <Position key={index} player={player} />
         ))}
       </section>
       <p className="text-strong">Bench</p>
       <section className="lineup">
-        {bench.map((player) => (
-          <Player player={player} />
-        ))}
+        {/* {bench.map((player, index) => (
+          <Position key={index} player={player} />
+        ))} */}
       </section>
     </React.Fragment>
   );
 }
 
-function SquadSelectorContainer({ players, formation }) {
+function SquadSelectorContainer({ players, currentFormation, addPlayer }) {
   return (
     <section>
-      <ActiveSquad formation={formation} />
-      <AvailablePlayers players={players} />
+      <ActiveSquad currentFormation={currentFormation} />
+      <AvailablePlayers players={players} addPlayer={addPlayer} />
     </section>
   );
 }
 
 function Main() {
-  const [currentFormation, setCurrentFormation] = useState(formations[0]);
+  const addPlayer = (player) => {
+    console.log(player);
+
+    // figure out how to make this grab the currentFormation selections, then push the selected player into it, then update state
+    let selections = currentFormation.selections;
+    console.log(selections);
+    const found = selections.find(
+      (element) => element.position === player.position && element.player === ""
+    );
+    console.log(found);
+    const newCurrentFormation = Object.assign(currentFormation);
+  };
+
+  const [currentFormation, setCurrentFormation] = useState({
+    title: "3412",
+    image: imagesFormations["3-4-1-2"],
+    positions: ["G", "D", "D", "D", "M", "M", "M", "M", "M", "F", "F"],
+    selections: [
+      { position: "G", player: "" },
+      { position: "D", player: "" },
+      { position: "D", player: "" },
+      { position: "D", player: "" },
+      { position: "M", player: "" },
+      { position: "M", player: "" },
+      { position: "M", player: "" },
+      { position: "M", player: "" },
+      { position: "M", player: "" },
+      { position: "F", player: "" },
+      { position: "F", player: "" },
+    ],
+  });
+
+  const [bench, setBench] = useState([
+    { position: "G", player: "" },
+    { position: "G", player: "" },
+    { position: "D", player: "" },
+    { position: "D", player: "" },
+    { position: "D", player: "" },
+    { position: "D", player: "" },
+    { position: "D", player: "" },
+    { position: "M", player: "" },
+    { position: "M", player: "" },
+    { position: "M", player: "" },
+    { position: "M", player: "" },
+    { position: "F", player: "" },
+    { position: "F", player: "" },
+    { position: "F", player: "" },
+    { position: "F", player: "" },
+  ]);
 
   const saveSquad = () => {
     return console.log("save squad clicked");
@@ -152,7 +145,11 @@ function Main() {
         formation={currentFormation}
         handleSetCurrentFormation={setCurrentFormation}
       />
-      {/* <SquadSelectorContainer players={players} formation={formations[41212]} /> */}
+      <SquadSelectorContainer
+        players={players}
+        currentFormation={currentFormation}
+        addPlayer={addPlayer}
+      />
       {/* <Button title="SAVE SQUAD" onClickFunc={saveSquad} /> */}
     </React.Fragment>
   );

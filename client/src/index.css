@@ -54,3 +54,18 @@ body {
 .formation img {
   max-width: 100%;
 }
+
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px;
+  border: 1px solid;
+  margin: 2px 0;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.player input {
+  width: 90%;
+}
