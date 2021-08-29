@@ -40,8 +40,13 @@ const bench = [
   { position: "F", player: "" },
 ];
 
-function FormationContainer({ formation }) {
+function FormationContainer({ formation, handleSetCurrentFormation }) {
   const [showModal, setShowModal] = useState(false);
+
+  const updateFormation = (formation) => {
+    handleSetCurrentFormation(formation);
+    setShowModal(false);
+  };
 
   return (
     <React.Fragment>
@@ -52,7 +57,7 @@ function FormationContainer({ formation }) {
       <FormationModal
         title="SELECT FORMATION"
         showModal={showModal}
-        onClickFunc={() => setShowModal(false)}
+        onClickFunc={updateFormation}
       />
     </React.Fragment>
   );
@@ -135,13 +140,18 @@ function SquadSelectorContainer({ players, formation }) {
 }
 
 function Main() {
+  const [currentFormation, setCurrentFormation] = useState(formations[0]);
+
   const saveSquad = () => {
     return console.log("save squad clicked");
   };
   return (
     <React.Fragment>
       <Title title="ENGLAND SQUAD" />
-      <FormationContainer formation={formations[0]} />
+      <FormationContainer
+        formation={currentFormation}
+        handleSetCurrentFormation={setCurrentFormation}
+      />
       {/* <SquadSelectorContainer players={players} formation={formations[41212]} /> */}
       {/* <Button title="SAVE SQUAD" onClickFunc={saveSquad} /> */}
     </React.Fragment>

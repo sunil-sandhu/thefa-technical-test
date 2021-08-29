@@ -9,7 +9,10 @@ export default function FormationModal(props) {
         </div>
         <div className="modal-body">
           {formations.map((formation) => (
-            <button className="formation" onClick={() => props.onClickFunc(false)}>
+            <button
+              key={formation.title}
+              className="formation"
+              onClick={() => props.onClickFunc(formation)}>
               <p>{formation.title}</p>
               <img src={formation.image} alt={formation.title} />
             </button>

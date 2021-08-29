@@ -15,14 +15,14 @@ test("pressing 'change formation' button displays 'formation' overlay", () => {
   expect(selectFormationText).toBeInTheDocument();
 });
 
-// test("changing formation updates the formation", () => {
-//   render(<AppWrapper />);
-//   const selectFormationButton = screen.getByText(/select formation/i);
-//   selectFormationButton.click();
+test("changing formation updates the formation", () => {
+  render(<AppWrapper />);
+  const selectFormationButton = screen.getByText(/select formation/i);
+  selectFormationButton.click();
 
-//   const formation = screen.getByLabelText(/451/i);
-//   formation.click();
+  const formation = screen.getByRole("button", { name: /451/i });
+  formation.click();
 
-//   const currentFormation = screen.getByText(/current formation: 451/i);
-//   expect(currentFormation).toBeInTheDocument();
-// });
+  const currentFormation = screen.getByText(/current formation: 451/i);
+  expect(currentFormation).toBeInTheDocument();
+});
