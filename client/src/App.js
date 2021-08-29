@@ -3,70 +3,10 @@ import appActions from "./redux/actions/appActions";
 
 import { formations } from "./options/formations";
 import { players } from "./options/players";
-
-function Title({ title }) {
-  return (
-    <header>
-      <h1>{title}</h1>
-    </header>
-  );
-}
-
-function Button({ title, onClickFunc }) {
-  return <button onClick={onClickFunc}>{title}</button>;
-}
-
-function FormationContainer({ formation }) {
-  const changeFormation = () => {
-    return console.log("change formation clicked");
-  };
-  return (
-    <div>
-      <img src={formation.image} alt="current formation" />
-      <p>Current formation: {formation.title}</p>
-      <Button title="CHANGE FORMATION" onClickFunc={changeFormation} />
-    </div>
-  );
-}
-
-function AvailablePlayers({ players }) {
-  const addPlayer = (player) => {
-    return console.log(`add player ${player.name} clicked`);
-  };
-  return (
-    <div>
-      <p className="text-strong">Currently available</p>
-      <p className="text-strong">Goalkeepers</p>
-      {players.goalkeepers.map((player) => (
-        <span>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
-      ))}
-      <p className="text-strong">Defenders</p>
-      {players.defenders.map((player) => (
-        <span>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
-      ))}
-      <p className="text-strong">Midfielders</p>
-      {players.midfielders.map((player) => (
-        <span>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
-      ))}
-      <p className="text-strong">Forwards</p>
-      {players.forwards.map((player) => (
-        <span>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} />
-          <p key={player.name}>{player.name}</p>
-        </span>
-      ))}
-    </div>
-  );
-}
+import React, { useState } from "react";
+import Button from "./components/Button";
+import Title from "./components/Title";
+import FormationModal from "./components/FormationModal";
 
 const starting = [
   { position: "G", player: "" },
@@ -100,33 +40,95 @@ const bench = [
   { position: "F", player: "" },
 ];
 
-function ActiveSquad() {
+function FormationContainer({ formation }) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
-    <div>
+    <React.Fragment>
+      <p>Current formation: {formation.title}</p>
+      <img src={formation.image} alt="current formation" />
+
+      <Button title="CHANGE FORMATION" onClickFunc={() => setShowModal(true)} />
+      <FormationModal
+        title="SELECT FORMATION"
+        showModal={showModal}
+        onClickFunc={() => setShowModal(false)}
+      />
+    </React.Fragment>
+  );
+}
+
+function AvailablePlayers({ players }) {
+  const addPlayer = (player) => {
+    return console.log(`add player ${player.name} clicked`);
+  };
+  return (
+    <React.Fragment>
+      <p className="text-strong">Currently available</p>
+      <p className="text-strong">Goalkeepers</p>
+      {players.goalkeepers.map((player) => (
+        <span>
+          <Button title="Add" onClickFunc={() => addPlayer(player)} />
+          <p key={player.name}>{player.name}</p>
+        </span>
+      ))}
+      <p className="text-strong">Defenders</p>
+      {players.defenders.map((player) => (
+        <span>
+          <Button title="Add" onClickFunc={() => addPlayer(player)} />
+          <p key={player.name}>{player.name}</p>
+        </span>
+      ))}
+      <p className="text-strong">Midfielders</p>
+      {players.midfielders.map((player) => (
+        <span>
+          <Button title="Add" onClickFunc={() => addPlayer(player)} />
+          <p key={player.name}>{player.name}</p>
+        </span>
+      ))}
+      <p className="text-strong">Forwards</p>
+      {players.forwards.map((player) => (
+        <span>
+          <Button title="Add" onClickFunc={() => addPlayer(player)} />
+          <p key={player.name}>{player.name}</p>
+        </span>
+      ))}
+    </React.Fragment>
+  );
+}
+
+function Player({ player }) {
+  return (
+    <div className="lineup-player">
+      <p>{player.position}</p>
+    </div>
+  );
+}
+
+function ActiveSquad({ formation }) {
+  console.log("do something with " + formation);
+  return (
+    <React.Fragment>
       <p className="text-strong">Starting lineup</p>
       <section className="lineup">
         {starting.map((player) => (
-          <div className="lineup-player">
-            <p>{player.position}</p>
-          </div>
+          <Player player={player} />
         ))}
       </section>
       <p className="text-strong">Bench</p>
       <section className="lineup">
         {bench.map((player) => (
-          <div className="lineup-player">
-            <p>{player.position}</p>
-          </div>
+          <Player player={player} />
         ))}
       </section>
-    </div>
+    </React.Fragment>
   );
 }
 
-function SquadSelectorContainer({ players }) {
+function SquadSelectorContainer({ players, formation }) {
   return (
     <section>
-      <ActiveSquad />
+      <ActiveSquad formation={formation} />
       <AvailablePlayers players={players} />
     </section>
   );
@@ -137,19 +139,18 @@ function Main() {
     return console.log("save squad clicked");
   };
   return (
-    <div className="">
+    <React.Fragment>
       <Title title="ENGLAND SQUAD" />
-      <FormationContainer formation={formations[41212]} />
-      <SquadSelectorContainer players={players} />
-      <Button title="SAVE SQUAD" onClickFunc={saveSquad} />
-    </div>
+      <FormationContainer formation={formations[0]} />
+      {/* <SquadSelectorContainer players={players} formation={formations[41212]} /> */}
+      {/* <Button title="SAVE SQUAD" onClickFunc={saveSquad} /> */}
+    </React.Fragment>
   );
 }
 
 function App() {
   const list = useSelector((store) => store.appReducer.list);
   const dispatch = useDispatch();
-
   const redux_add = (todo) => dispatch(appActions.redux_add(todo));
   const redux_delete = (id) => dispatch(appActions.redux_delete(id));
 

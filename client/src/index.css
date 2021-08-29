@@ -13,3 +13,44 @@ body {
 .lineup {
   border: 1px solid;
 }
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  background-color: white;
+  display: none;
+  z-index: 2;
+  width: 100%;
+}
+
+.modal-open {
+  display: block;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 10px;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.modal-body {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.formation {
+  border: 1px solid;
+  border-radius: 5px;
+  max-width: calc((100% / 3) - 4px);
+  margin: 2px;
+}
+
+.formation img {
+  max-width: 100%;
+}
