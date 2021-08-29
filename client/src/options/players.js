@@ -1,0 +1,138 @@
+// const goalkeepers = {
+//   "Tom Heaton": { name: "Tom Heaton", position: "goalkeeper" },
+//   "Jack Butland": { name: "Jack Butland", position: "goalkeeper" },
+//   "Aaron Ramsdale": { name: "Aaron Ramsdale", position: "goalkeeper" },
+//   "Nick Pope": { name: "Nick Poper", position: "goalkeeper" },
+//   "Dean Henderson": { name: "Dean Henderson", position: "goalkeeper" },
+//   "Sam Johnstone": { name: "Sam Johnstone", position: "goalkeeper" },
+//   "Jordan Pickford": { name: "Jordan Pickford", position: "goalkeeper" },
+// };
+
+// const defenders = {
+//   "Trent Alexander-Arnold": { name: "Trent Alexander-Arnold", position: "defender" },
+//   "Kieran Trippier": { name: "Kieran Trippier", position: "defender" },
+//   "Danny Rose": { name: "Danny Rose", position: "defender" },
+//   "Michael Keane": { name: "Michael Keane", position: "defender" },
+//   "John Stones": { name: "John Stones", position: "defender" },
+//   "Joe Gomez": { name: "Joe Gomez", position: "defender" },
+//   "Reece James": { name: "Reece James", position: "defender" },
+//   "Ben Chilwell": { name: "Ben Chilwell", position: "defender" },
+//   "Harry Maguire": { name: "Harry Maguire", position: "defender" },
+//   "Luke Shaw": { name: "Luke Shaw", position: "defender" },
+//   "Tyrone Mings": { name: "Tyrone Mings", position: "defender" },
+//   "Ben White": { name: "Ben White", position: "defender" },
+//   "Fikayo Tomori": { name: "Fikayo Tomori", position: "defender" },
+//   "Conor Coady": { name: "Conor Coady", position: "defender" },
+//   "Kyle Walker": { name: "Kyle Walker", position: "defender" },
+// };
+
+// const midfielders = {
+//   "Ross Barkley": { name: "Ross Barkley", position: "midfielder" },
+//   "James Ward-Prowse": { name: "James Ward-Prowse", position: "midfielder" },
+//   "Declan Rice": { name: "Declan Rice", position: "midfielder" },
+//   "Jesse Lingard": { name: "Jesse Lingard", position: "midfielder" },
+//   "Ben Godfrey": { name: "Ben Godfrey", position: "midfielder" },
+//   "Jordan Henderson": { name: "Jordan Henderson", position: "midfielder" },
+//   "Eric Dier": { name: "Eric Dier", position: "midfielder" },
+//   "Jack Grealish": { name: "Jack Grealish", position: "midfielder" },
+//   "Harry Winks": { name: "Harry Winks", position: "midfielder" },
+//   "Harvey Barnes": { name: "Harvey Barnes", position: "midfielder" },
+//   "Fabian Delph": { name: "Fabian Delph", position: "midfielder" },
+//   "Jude Bellingham": { name: "Jude Bellingham", position: "midfielder" },
+//   "Mason Mount": { name: "Mason Mount", position: "midfielder" },
+//   "Ainsley Maitland-Niles": { name: "Ainsley Maitland-Niles", position: "midfielder" },
+//   "Kalvin Phillips": { name: "Kalvin Phillips", position: "midfielder" },
+//   "Dele Alli": { name: "Dele Alli", position: "midfielder" },
+//   "Callum Hudson-Odoi": { name: "Callum Hudson-Odoi", position: "midfielder" },
+//   "James Maddison": { name: "James Maddison", position: "midfielder" },
+//   "Alex Oxlade-Chamberlain": { name: "Alex Oxlade-Chamberlain", position: "midfielder" },
+// };
+
+// const forwards = {
+//   "Raheem Sterling": { name: "Raheem Sterling", position: "forward" },
+//   "Bukayo Saka": { name: "Bukayo Saka", position: "forward" },
+//   "Phil Foden": { name: "Phil Foden", position: "forward" },
+//   "Jadon Sancho": { name: "Jadon Sancho", position: "forward" },
+//   "Callum Wilson": { name: "Callum Wilson", position: "forward" },
+//   "Marcus Rashford": { name: "Marcus Rashford", position: "forward" },
+//   "Dominic Calvert-Lewin": { name: "Dominic Calvert-Lewin", position: "forward" },
+//   "Harry Kane": { name: "Harry Kane", position: "forward" },
+//   "Tammy Abraham": { name: "Tammy Abraham", position: "forward" },
+//   "Ollie Watkins": { name: "Ollie Watkins", position: "forward" },
+//   "Patrick Bamford": { name: "Patrick Bamford", position: "forward" },
+//   "Danny Ings": { name: "Danny Ings", position: "forward" },
+//   "Mason Greenwood": { name: "Mason Greenwood", position: "forward" },
+// };
+
+const goalkeepers = [
+  { name: "Tom Heaton", position: "goalkeeper" },
+  { name: "Jack Butland", position: "goalkeeper" },
+  { name: "Aaron Ramsdale", position: "goalkeeper" },
+  { name: "Nick Pope", position: "goalkeeper" },
+  { name: "Dean Henderson", position: "goalkeeper" },
+  { name: "Sam Johnstone", position: "goalkeeper" },
+  { name: "Jordan Pickford", position: "goalkeeper" },
+];
+
+const defenders = [
+  { name: "Trent Alexander-Arnold", position: "defender" },
+  { name: "Kieran Trippier", position: "defender" },
+  { name: "Danny Rose", position: "defender" },
+  { name: "Michael Keane", position: "defender" },
+  { name: "John Stones", position: "defender" },
+  { name: "Joe Gomez", position: "defender" },
+  { name: "Reece James", position: "defender" },
+  { name: "Ben Chilwell", position: "defender" },
+  { name: "Harry Maguire", position: "defender" },
+  { name: "Luke Shaw", position: "defender" },
+  { name: "Tyrone Mings", position: "defender" },
+  { name: "Ben White", position: "defender" },
+  { name: "Fikayo Tomori", position: "defender" },
+  { name: "Conor Coady", position: "defender" },
+  { name: "Kyle Walker", position: "defender" },
+];
+
+const midfielders = [
+  { name: "Ross Barkley", position: "midfielder" },
+  { name: "James Ward-Prowse", position: "midfielder" },
+  { name: "Declan Rice", position: "midfielder" },
+  { name: "Jesse Lingard", position: "midfielder" },
+  { name: "Ben Godfrey", position: "midfielder" },
+  { name: "Jordan Henderson", position: "midfielder" },
+  { name: "Eric Dier", position: "midfielder" },
+  { name: "Jack Grealish", position: "midfielder" },
+  { name: "Harry Winks", position: "midfielder" },
+  { name: "Harvey Barnes", position: "midfielder" },
+  { name: "Fabian Delph", position: "midfielder" },
+  { name: "Jude Bellingham", position: "midfielder" },
+  { name: "Mason Mount", position: "midfielder" },
+  { name: "Ainsley Maitland-Niles", position: "midfielder" },
+  { name: "Kalvin Phillips", position: "midfielder" },
+  { name: "Dele Alli", position: "midfielder" },
+  { name: "Callum Hudson-Odoi", position: "midfielder" },
+  { name: "James Maddison", position: "midfielder" },
+  { name: "Alex Oxlade-Chamberlain", position: "midfielder" },
+];
+
+const forwards = [
+  { name: "Raheem Sterling", position: "forward" },
+  { name: "Bukayo Saka", position: "forward" },
+  { name: "Phil Foden", position: "forward" },
+  { name: "Jadon Sancho", position: "forward" },
+  { name: "Callum Wilson", position: "forward" },
+  { name: "Marcus Rashford", position: "forward" },
+  { name: "Dominic Calvert-Lewin", position: "forward" },
+  { name: "Harry Kane", position: "forward" },
+  { name: "Tammy Abraham", position: "forward" },
+  { name: "Ollie Watkins", position: "forward" },
+  { name: "Patrick Bamford", position: "forward" },
+  { name: "Danny Ings", position: "forward" },
+  { name: "Mason Greenwood", position: "forward" },
+];
+
+export const players = {
+  goalkeepers,
+  defenders,
+  midfielders,
+  forwards,
+};
