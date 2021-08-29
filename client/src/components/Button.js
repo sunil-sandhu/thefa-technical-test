@@ -1,3 +1,7 @@
-export default function Button({ title, onClickFunc }) {
-  return <button onClick={onClickFunc}>{title}</button>;
+export default function Button({ title, onClickFunc, btnFor = "" }) {
+  return (
+    <button data-player={btnFor} onClick={onClickFunc}>
+      {title}
+    </button>
+  );
 }

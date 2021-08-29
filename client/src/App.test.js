@@ -38,3 +38,13 @@ test("changing formation updates the formation options in the starting lineup", 
   let currentFormation = app.container.querySelectorAll('label[for="F"]');
   expect(currentFormation.length).toBe(3);
 });
+
+test("selecting a player adds them to the starting lineup", () => {
+  const app = render(<AppWrapper />);
+  let harryKane = app.container.querySelector('[data-player="Harry Kane"]');
+  harryKane.click();
+
+  const squadWithHarryKane = screen.getByTestId("Harry Kane");
+
+  expect(squadWithHarryKane).toBeInTheDocument();
+});
