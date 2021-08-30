@@ -51,25 +51,21 @@ test("selecting a player adds them to the starting lineup", () => {
 
 test("if a player has been selected, they cannot be selected again", () => {
   const app = render(<AppWrapper />);
-  let harryKane = app.container.querySelector('[data-player="Harry Kane"]');
-  harryKane.click();
-
-  harryKane.click();
-
-  harryKane.click();
-  const squadWithHarryKane = screen.getAllByTestId("Harry Kane");
-
-  expect(squadWithHarryKane.length).toBe(1);
+  let raheemSterling = app.container.querySelector('[data-player="Raheem Sterling"]');
+  raheemSterling.click();
+  expect(raheemSterling).not.toBeInTheDocument();
 });
 
 test("players can be removed from the squad", () => {
   const app = render(<AppWrapper />);
 
-  let harryKane = app.container.querySelector('[data-player="Harry Kane"]');
-  harryKane.click();
+  let jordanHenderson = app.container.querySelector('[data-player="Jordan Henderson"]');
+  jordanHenderson.click();
 
-  let squadWithHarryKane = app.container.querySelector('[data-player-to-remove="Harry Kane"]');
-  squadWithHarryKane.click();
+  let squadWithJordanHenderson = app.container.querySelector(
+    '[data-player-to-remove="Jordan Henderson"]'
+  );
+  squadWithJordanHenderson.click();
 
-  expect(squadWithHarryKane).not.toBeInTheDocument();
+  expect(squadWithJordanHenderson).not.toBeInTheDocument();
 });

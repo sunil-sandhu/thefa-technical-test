@@ -64,7 +64,7 @@
 //   "Mason Greenwood": { name: "Mason Greenwood", position: "forward" },
 // };
 
-const goalkeepers = [
+const G = [
   { name: "Tom Heaton", position: "G" },
   { name: "Jack Butland", position: "G" },
   { name: "Aaron Ramsdale", position: "G" },
@@ -74,7 +74,7 @@ const goalkeepers = [
   { name: "Jordan Pickford", position: "G" },
 ];
 
-const defenders = [
+const D = [
   { name: "Trent Alexander-Arnold", position: "D" },
   { name: "Kieran Trippier", position: "D" },
   { name: "Danny Rose", position: "D" },
@@ -92,7 +92,7 @@ const defenders = [
   { name: "Kyle Walker", position: "D" },
 ];
 
-const midfielders = [
+const M = [
   { name: "Ross Barkley", position: "M" },
   { name: "James Ward-Prowse", position: "M" },
   { name: "Declan Rice", position: "M" },
@@ -114,7 +114,7 @@ const midfielders = [
   { name: "Alex Oxlade-Chamberlain", position: "M" },
 ];
 
-const forwards = [
+const F = [
   { name: "Raheem Sterling", position: "F" },
   { name: "Bukayo Saka", position: "F" },
   { name: "Phil Foden", position: "F" },
@@ -131,8 +131,8 @@ const forwards = [
 ];
 
 export const players = {
-  goalkeepers,
-  defenders,
-  midfielders,
-  forwards,
+  G,
+  D,
+  M,
+  F,
 };

@@ -2,40 +2,40 @@ import { useSelector, useDispatch } from "react-redux";
 import appActions from "./redux/actions/appActions";
 import { formations } from "./options/formations";
 import { bench as _bench } from "./options/bench";
-import { players } from "./options/players";
+import { players as _players } from "./options/players";
 import React, { useState } from "react";
 import Button from "./components/Button";
 import Title from "./components/Title";
 import FormationContainer from "./components/FormationContainer";
 import { sortBenchByPositionOrder } from "./utils/sortBenchByPositionOrder";
 
-function AvailablePlayers({ addPlayer }) {
+function AvailablePlayers({ players, addPlayer }) {
   return (
     <React.Fragment>
       <p className="text-strong">Currently available</p>
       <p className="text-strong">Goalkeepers</p>
-      {players.goalkeepers.map((player) => (
+      {players.G.map((player) => (
         <div key={player.name} className="player">
           <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
         </div>
       ))}
       <p className="text-strong">Defenders</p>
-      {players.defenders.map((player) => (
+      {players.D.map((player) => (
         <div key={player.name} className="player">
           <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
         </div>
       ))}
       <p className="text-strong">Midfielders</p>
-      {players.midfielders.map((player) => (
+      {players.M.map((player) => (
         <div key={player.name} className="player">
           <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
         </div>
       ))}
       <p className="text-strong">Forwards</p>
-      {players.forwards.map((player) => (
+      {players.F.map((player) => (
         <div key={player.name} className="player">
           <p>{player.name}</p>
           <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
@@ -95,26 +95,42 @@ function Main() {
     }
   };
 
+  const filterSelectedPlayerFromSquadOptions = (player) => {
+    // copy of old state
+    let availablePlayers = players;
+
+    // filter selected player out of available players in that player's position
+    const playerToRemoveFromAvailablePlayers = players[player.position].filter(
+      (p) => p.name !== player.name
+    );
+
+    // then replace the values in that position with the new filtered array
+    availablePlayers[player.position] = playerToRemoveFromAvailablePlayers;
+
+    setPlayers(availablePlayers);
+  };
+
   const addPlayer = (player) => {
     let { selections } = currentFormation;
 
-    let returnMinusOneIfStartingLineupIsFull = selections
+    const returnMinusOneIfStartingLineupIsFull = selections
       .map((position) => position.name)
       .findIndex((element) => element === "");
     if (returnMinusOneIfStartingLineupIsFull === -1) {
       addPlayerToBench(player);
     } else {
-      const playerAlreadyInSquad = selections.find((element) => element.name === player.name);
-      if (!playerAlreadyInSquad) {
-        const indexOfMatchingSquadPositionToReplace = selections.findIndex(
-          (element) => element.position === player.position && element.name === ""
-        );
+      filterSelectedPlayerFromSquadOptions(player);
+      // const playerAlreadyInSquad = selections.find((element) => element.name === player.name);
+      // if (!playerAlreadyInSquad) {
+      const indexOfMatchingSquadPositionToReplace = selections.findIndex(
+        (element) => element.position === player.position && element.name === ""
+      );
 
-        if (indexOfMatchingSquadPositionToReplace !== -1) {
-          selections[indexOfMatchingSquadPositionToReplace] = player;
-          setCurrentFormation(Object.assign({}, currentFormation, selections));
-        }
+      if (indexOfMatchingSquadPositionToReplace !== -1) {
+        selections[indexOfMatchingSquadPositionToReplace] = player;
+        setCurrentFormation(Object.assign({}, currentFormation, selections));
       }
+      // }
     }
   };
 
@@ -135,6 +151,8 @@ function Main() {
 
   const [bench, setBench] = useState(_bench);
 
+  const [players, setPlayers] = useState(_players);
+
   const saveSquad = () => {
     return console.log("save squad clicked");
   };
@@ -147,9 +165,9 @@ function Main() {
         handleSetCurrentFormation={setCurrentFormation}
       />
       <ActiveSquad currentFormation={currentFormation} bench={bench} removePlayer={removePlayer} />
-      <AvailablePlayers squad={players} addPlayer={addPlayer} />
+      <AvailablePlayers players={players} addPlayer={addPlayer} />
 
-      {/* <Button title="SAVE SQUAD" onClickFunc={saveSquad} /> */}
+      <Button title="SAVE SQUAD" onClickFunc={saveSquad} />
     </React.Fragment>
   );
 }
