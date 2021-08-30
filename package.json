@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "dependencies": {
-    "redux-persist": "^6.0.0"
-  },
+  "dependencies": {},
   "author": "Sunil Sandhu",
   "scripts": {
     "start": "node server/index.js"
