@@ -15,11 +15,4 @@ const AppWrapper = () => {
   );
 };
 
-// For testing purposes onlt
-// export const AppWrapperWithoutPersist = () => {
-//   <Provider store={store}>
-//     <App />
-//   </Provider>;
-// };
-
 export default AppWrapper;

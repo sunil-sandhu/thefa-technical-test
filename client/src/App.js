@@ -80,18 +80,15 @@ function ActiveSquad({ currentFormation, bench, removePlayer }) {
 
 function Main() {
   const addPlayerToBench = (player) => {
-    const playerAlreadyInSquad = bench.find((element) => element.name === player.name);
-    if (!playerAlreadyInSquad) {
-      const indexOfMatchingSquadPositionToReplace = bench.findIndex(
-        (element) => element.name === ""
-      );
-      if (indexOfMatchingSquadPositionToReplace !== -1) {
-        let updatedBench = bench;
-        updatedBench[indexOfMatchingSquadPositionToReplace] = player;
-        updatedBench.sort(sortBenchByPositionOrder);
-        // function to sort bench by position
-        setBench(() => [...updatedBench]);
-      }
+    filterSelectedPlayerFromSquadOptions(player);
+
+    const indexOfMatchingSquadPositionToReplace = bench.findIndex((element) => element.name === "");
+    if (indexOfMatchingSquadPositionToReplace !== -1) {
+      let updatedBench = bench;
+      updatedBench[indexOfMatchingSquadPositionToReplace] = player;
+      updatedBench.sort(sortBenchByPositionOrder);
+      // function to sort bench by position
+      setBench(() => [...updatedBench]);
     }
   };
 
@@ -110,6 +107,12 @@ function Main() {
     setPlayers(availablePlayers);
   };
 
+  const addPlayerBackIntoSquadOptions = (player) => {
+    let availablePlayers = players;
+    availablePlayers[player.position].push(player);
+    setPlayers(availablePlayers);
+  };
+
   const addPlayer = (player) => {
     let { selections } = currentFormation;
 
@@ -120,8 +123,7 @@ function Main() {
       addPlayerToBench(player);
     } else {
       filterSelectedPlayerFromSquadOptions(player);
-      // const playerAlreadyInSquad = selections.find((element) => element.name === player.name);
-      // if (!playerAlreadyInSquad) {
+
       const indexOfMatchingSquadPositionToReplace = selections.findIndex(
         (element) => element.position === player.position && element.name === ""
       );
@@ -130,7 +132,6 @@ function Main() {
         selections[indexOfMatchingSquadPositionToReplace] = player;
         setCurrentFormation(Object.assign({}, currentFormation, selections));
       }
-      // }
     }
   };
 
@@ -140,10 +141,12 @@ function Main() {
       let indexPositionToClear = selections.findIndex((s) => s.name === player.name);
       selections[indexPositionToClear] = { position: player.position, name: "" };
       setCurrentFormation(Object.assign({}, currentFormation, selections));
+      addPlayerBackIntoSquadOptions(player);
     } else {
       let indexPositionToClear = bench.findIndex((s) => s.name === player.name);
       bench[indexPositionToClear] = { position: "", name: "" };
       setBench(() => [...bench]);
+      addPlayerBackIntoSquadOptions(player);
     }
   };
 

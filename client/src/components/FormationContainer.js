@@ -12,10 +12,11 @@ export default function FormationContainer({ formation, handleSetCurrentFormatio
 
   return (
     <React.Fragment>
-      <p>Current formation: {formation.title}</p>
+      <p className="current-formation">Current formation: {formation.title}</p>
       <img src={formation.image} alt="current formation" />
-
-      <Button title="CHANGE FORMATION" onClickFunc={() => setShowModal(true)} />
+      <div className="center-align">
+        <Button title="CHANGE FORMATION" onClickFunc={() => setShowModal(true)} />
+      </div>
       <FormationModal
         title="SELECT FORMATION"
         showModal={showModal}

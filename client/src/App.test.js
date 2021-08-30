@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import AppWrapper from "./AppWrapper";
 
 test("renders page", () => {
@@ -41,31 +41,42 @@ test("changing formation updates the formation options in the starting lineup", 
 
 test("selecting a player adds them to the starting lineup", () => {
   const app = render(<AppWrapper />);
-  let harryKane = app.container.querySelector('[data-player="Harry Kane"]');
-  harryKane.click();
+  let player = app.container.querySelector('[data-player="Harry Kane"]');
+  player.click();
 
-  const squadWithHarryKane = screen.getByTestId("Harry Kane");
+  const squadWithPlayer = screen.getByTestId("Harry Kane");
 
-  expect(squadWithHarryKane).toBeInTheDocument();
+  expect(squadWithPlayer).toBeInTheDocument();
 });
 
 test("if a player has been selected, they cannot be selected again", () => {
   const app = render(<AppWrapper />);
-  let raheemSterling = app.container.querySelector('[data-player="Raheem Sterling"]');
-  raheemSterling.click();
-  expect(raheemSterling).not.toBeInTheDocument();
+  let player = app.container.querySelector('[data-player="Raheem Sterling"]');
+  player.click();
+  expect(player).not.toBeInTheDocument();
 });
 
 test("players can be removed from the squad", () => {
   const app = render(<AppWrapper />);
 
-  let jordanHenderson = app.container.querySelector('[data-player="Jordan Henderson"]');
-  jordanHenderson.click();
+  let player = app.container.querySelector('[data-player="Jordan Henderson"]');
+  player.click();
 
-  let squadWithJordanHenderson = app.container.querySelector(
-    '[data-player-to-remove="Jordan Henderson"]'
-  );
-  squadWithJordanHenderson.click();
+  let squadWithPlayer = app.container.querySelector('[data-player-to-remove="Jordan Henderson"]');
+  squadWithPlayer.click();
 
-  expect(squadWithJordanHenderson).not.toBeInTheDocument();
+  expect(squadWithPlayer).not.toBeInTheDocument();
+});
+
+test("players removed from squad are added back into the pool", () => {
+  const app = render(<AppWrapper />);
+
+  let player = app.container.querySelector('[data-player="Nick Pope"]');
+  player.click();
+
+  let squadWithPlayer = app.container.querySelector('[data-player-to-remove="Nick Pope"]');
+  squadWithPlayer.click();
+
+  let samePlayer = app.container.querySelector('[data-player="Nick Pope"]');
+  expect(samePlayer).toBeInTheDocument();
 });

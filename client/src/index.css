@@ -6,6 +6,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+  text-align: center;
+}
+
+.center-align {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+p.current-formation {
+  text-align: center;
+}
+
 .text-strong {
   font-weight: bold;
 }
