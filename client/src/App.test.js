@@ -48,3 +48,26 @@ test("selecting a player adds them to the starting lineup", () => {
 
   expect(squadWithHarryKane).toBeInTheDocument();
 });
+
+test("if a player has been selected, they cannot be selected again", () => {
+  const app = render(<AppWrapper />);
+  let harryKane = app.container.querySelector('[data-player="Harry Kane"]');
+  harryKane.click();
+
+  harryKane.click();
+
+  harryKane.click();
+  const squadWithHarryKane = screen.getAllByTestId("Harry Kane");
+
+  expect(squadWithHarryKane.length).toBe(1);
+});
+
+// test("if the starting line up is full, players get added to the bench instead", () => {
+//   const app = render(<AppWrapper />);
+//   let harryKane = app.container.querySelector('[data-player="Harry Kane"]');
+//   harryKane.click();
+
+//   const squadWithHarryKane = screen.getAllByTestId("Harry Kane");
+
+//   expect(squadWithHarryKane.length).toBe(1);
+// });
