@@ -1,15 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
 import appActions from "./redux/actions/appActions";
-
+import { formations } from "./options/formations";
+import { bench as _bench } from "./options/bench";
 import { players } from "./options/players";
 import React, { useState } from "react";
 import Button from "./components/Button";
 import Title from "./components/Title";
-import { imagesFormations } from "./assets/img/formations/imagesFormations";
 import FormationContainer from "./components/FormationContainer";
 import { sortBenchByPositionOrder } from "./utils/sortBenchByPositionOrder";
 
-function AvailablePlayers({ players, addPlayer }) {
+function AvailablePlayers({ addPlayer }) {
   return (
     <React.Fragment>
       <p className="text-strong">Currently available</p>
@@ -45,46 +45,36 @@ function AvailablePlayers({ players, addPlayer }) {
   );
 }
 
-function Position({ player }) {
+function Position({ player, removePlayer }) {
   return (
     <div className="player">
       <label htmlFor={player.position}>{player.position}</label>
       <p data-testid={player.name}>{player.name}</p>
       {player.name && (
-        <Button
-          title="Remove"
-          // onClickFunc={() => removePlayer(player)} btnFor={player.name}
-        />
+        <button data-player-to-remove={player.name} onClick={() => removePlayer(player)}>
+          Remove
+        </button>
       )}
     </div>
   );
 }
 
-function ActiveSquad({ currentFormation, bench }) {
+function ActiveSquad({ currentFormation, bench, removePlayer }) {
   return (
     <React.Fragment>
       <p className="text-strong">Starting lineup</p>
       <section className="">
         {currentFormation.selections.map((player, index) => (
-          <Position key={index} player={player} />
+          <Position key={index} player={player} removePlayer={removePlayer} />
         ))}
       </section>
       <p className="text-strong">Bench</p>
       <section className="">
         {bench.map((player, index) => (
-          <Position key={index} player={player} />
+          <Position key={index} player={player} removePlayer={removePlayer} />
         ))}
       </section>
     </React.Fragment>
-  );
-}
-
-function SquadSelectorContainer({ players, currentFormation, bench, addPlayer }) {
-  return (
-    <section>
-      <ActiveSquad currentFormation={currentFormation} bench={bench} />
-      <AvailablePlayers players={players} addPlayer={addPlayer} />
-    </section>
   );
 }
 
@@ -128,42 +118,22 @@ function Main() {
     }
   };
 
-  const [currentFormation, setCurrentFormation] = useState({
-    title: "3412",
-    image: imagesFormations["3-4-1-2"],
-    positions: ["G", "D", "D", "D", "M", "M", "M", "M", "M", "F", "F"],
-    selections: [
-      { position: "G", name: "" },
-      { position: "D", name: "" },
-      { position: "D", name: "" },
-      { position: "D", name: "" },
-      { position: "M", name: "" },
-      { position: "M", name: "" },
-      { position: "M", name: "" },
-      { position: "M", name: "" },
-      { position: "M", name: "" },
-      { position: "F", name: "" },
-      { position: "F", name: "" },
-    ],
-  });
+  const removePlayer = (player) => {
+    let { selections } = currentFormation;
+    if (selections.includes(player)) {
+      let indexPositionToClear = selections.findIndex((s) => s.name === player.name);
+      selections[indexPositionToClear] = { position: player.position, name: "" };
+      setCurrentFormation(Object.assign({}, currentFormation, selections));
+    } else {
+      let indexPositionToClear = bench.findIndex((s) => s.name === player.name);
+      bench[indexPositionToClear] = { position: "", name: "" };
+      setBench(() => [...bench]);
+    }
+  };
 
-  const [bench, setBench] = useState([
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-    { position: "", name: "" },
-  ]);
+  const [currentFormation, setCurrentFormation] = useState(formations[0]);
+
+  const [bench, setBench] = useState(_bench);
 
   const saveSquad = () => {
     return console.log("save squad clicked");
@@ -176,12 +146,9 @@ function Main() {
         formation={currentFormation}
         handleSetCurrentFormation={setCurrentFormation}
       />
-      <SquadSelectorContainer
-        bench={bench}
-        players={players}
-        currentFormation={currentFormation}
-        addPlayer={addPlayer}
-      />
+      <ActiveSquad currentFormation={currentFormation} bench={bench} removePlayer={removePlayer} />
+      <AvailablePlayers squad={players} addPlayer={addPlayer} />
+
       {/* <Button title="SAVE SQUAD" onClickFunc={saveSquad} /> */}
     </React.Fragment>
   );
