@@ -1,5 +1,7 @@
 ### Resources used so far
 
+- Redux Persist https://github.com/rt2zz/redux-persist
+
 - https://www.freecodecamp.org/news/how-to-create-a-react-app-with-a-node-backend-the-complete-guide/
   for getting the basic set up of a node backend react frontend app
 
