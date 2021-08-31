@@ -8,110 +8,12 @@ import Button from "./components/Button";
 import Title from "./components/Title";
 import FormationContainer from "./components/FormationContainer";
 import { sortBenchByPositionOrder } from "./utils/sortBenchByPositionOrder";
-
-function AvailablePlayers({ players, addPlayer }) {
-  return (
-    <section className="col">
-      <p className="text-strong">Currently available</p>
-      {/* <p className="text-strong">Goalkeepers</p> */}
-      {players.G.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
-      ))}
-      {/* <p className="text-strong">Defenders</p> */}
-      {players.D.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
-      ))}
-      {/* <p className="text-strong">Midfielders</p> */}
-      {players.M.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
-      ))}
-      {/* <p className="text-strong">Forwards</p> */}
-      {players.F.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
-      ))}
-    </section>
-  );
-}
-
-function Position({ player, removePlayer }) {
-  return (
-    <div className="player" data-testid={player.name}>
-      <label htmlFor={player.position}>{player.position}</label>
-      <p>{player.name}</p>
-      {player.name && (
-        <button
-          data-player-to-remove={player.name}
-          onClick={() => removePlayer(player)}
-          className="button button-small red">
-          REMOVE
-        </button>
-      )}
-    </div>
-  );
-}
-
-function ActiveSquad({ currentFormation, bench, removePlayer }) {
-  return (
-    <section className="col">
-      <p className="text-strong">Starting lineup</p>
-      <div data-testid="starting-lineup" className="">
-        {currentFormation.selections.map((player, index) => (
-          <Position key={index} player={player} removePlayer={removePlayer} />
-        ))}
-      </div>
-      <p className="text-strong">Bench</p>
-      <div className="">
-        {bench.map((player, index) => (
-          <Position key={index} player={player} removePlayer={removePlayer} />
-        ))}
-      </div>
-    </section>
-  );
-}
+import Squad from "./components/Squad";
+import AvailablePlayers from "./components/AvailablePlayers";
 
 function Main() {
   const addPlayerToBench = (player) => {
-    filterSelectedPlayerFromSquadOptions(player);
+    removeSelectedPlayerFromSquadOptions(player);
 
     const indexOfMatchingSquadPositionToReplace = bench.findIndex((element) => element.name === "");
     if (indexOfMatchingSquadPositionToReplace !== -1) {
@@ -123,7 +25,7 @@ function Main() {
     }
   };
 
-  const filterSelectedPlayerFromSquadOptions = (player) => {
+  const removeSelectedPlayerFromSquadOptions = (player) => {
     // copy of old state
     let availablePlayers = players;
 
@@ -153,7 +55,7 @@ function Main() {
     if (returnMinusOneIfStartingLineupIsFull === -1) {
       addPlayerToBench(player);
     } else {
-      filterSelectedPlayerFromSquadOptions(player);
+      removeSelectedPlayerFromSquadOptions(player);
 
       const indexOfMatchingSquadPositionToReplace = selections.findIndex(
         (element) => element.position === player.position && element.name === ""
@@ -199,11 +101,7 @@ function Main() {
         handleSetCurrentFormation={setCurrentFormation}
       />
       <main className="flex">
-        <ActiveSquad
-          currentFormation={currentFormation}
-          bench={bench}
-          removePlayer={removePlayer}
-        />
+        <Squad currentFormation={currentFormation} bench={bench} removePlayer={removePlayer} />
         <AvailablePlayers players={players} addPlayer={addPlayer} />
       </main>
       <Button title="SAVE SQUAD" onClickFunc={saveSquad} size="large" />
@@ -213,11 +111,16 @@ function Main() {
 
 function App() {
   const list = useSelector((store) => store.appReducer.list);
+
+  const currentFormation = useSelector((store) => store.appReducer.currentFormation);
+  const bench = useSelector((store) => store.appReducer.bench);
+  const players = useSelector((store) => store.appReducer.players);
   const dispatch = useDispatch();
+
   const redux_add = (todo) => dispatch(appActions.redux_add(todo));
   const redux_delete = (id) => dispatch(appActions.redux_delete(id));
 
-  const props = { list, redux_add, redux_delete };
+  const props = { list, currentFormation, bench, players, redux_add, redux_delete };
 
   return <Main {...props} />;
 }

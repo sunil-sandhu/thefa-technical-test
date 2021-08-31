@@ -1,10 +1,18 @@
+import { bench as _bench } from "../../options/bench";
+import { formations } from "../../options/formations";
+import { players as _players } from "../../options/players";
 import { ADD_ITEM, DELETE_ITEM } from "../actionTypes";
+
+// const [players, setPlayers] = useState(_players);
 
 const initialState = {
   list: [
     { id: 1, text: "clean the house" },
     { id: 2, text: "buy milk" },
   ],
+  currentFormation: formations[0],
+  bench: _bench,
+  players: _players,
 };
 
 export default function appReducer(state = initialState, action) {
