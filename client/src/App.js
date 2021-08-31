@@ -1,8 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import appActions from "./redux/actions/appActions";
-import { formations } from "./options/formations";
-import { bench as _bench } from "./options/bench";
-import { players as _players } from "./options/players";
 import React, { useState } from "react";
 import Button from "./components/Button";
 import Title from "./components/Title";
@@ -11,21 +8,93 @@ import { sortBenchByPositionOrder } from "./utils/sortBenchByPositionOrder";
 import Squad from "./components/Squad";
 import AvailablePlayers from "./components/AvailablePlayers";
 
-function Main() {
+function SavedSquadModal({ title, showModal, savedSquads, onClickFunc, onCancelFunc }) {
+  return (
+    <div className={showModal ? "modal modal-open" : "modal"}>
+      <div className="modal-content">
+        <div className="modal-header">
+          <h4 className="modal-title">{title}</h4>
+          <button onClick={onCancelFunc} className="button button-small grey">
+            CANCEL
+          </button>
+        </div>
+        <div className="modal-body">
+          {savedSquads.length > 0 &&
+            savedSquads.map((squad) => (
+              <button
+                key={squad.date}
+                className="button button-small grey"
+                onClick={() => onClickFunc(squad)}>
+                <p>
+                  <span className="bold">{squad.title}</span>: Created on {squad.date}
+                </p>
+              </button>
+            ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SavedSquadsContainer({ savedSquads, loadSquad, clearSquad }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLoadSquad = (formation) => {
+    loadSquad(formation);
+    setShowModal(false);
+  };
+
+  const handleClearSquad = () => {
+    console.log("clearing squad");
+    clearSquad();
+  };
+
+  return (
+    <aside>
+      <div className="flex space-between">
+        {savedSquads.length > 0 ? (
+          <Button title="Saved squads" onClickFunc={() => setShowModal(true)} size="small" />
+        ) : (
+          <span></span>
+        )}
+        <Button title="Clear squad" onClickFunc={handleClearSquad} size="small" />
+      </div>
+      <SavedSquadModal
+        title="LOAD SQUAD"
+        showModal={showModal}
+        onClickFunc={handleLoadSquad}
+        onCancelFunc={() => setShowModal(false)}
+        savedSquads={savedSquads}
+      />
+    </aside>
+  );
+}
+
+function Main({
+  formation,
+  bench,
+  players,
+  savedSquads,
+  redux_update_formation,
+  redux_update_squad_options,
+  redux_add_player_to_bench,
+  redux_save_squad,
+  redux_load_squad,
+  redux_clear_squad,
+}) {
   const addPlayerToBench = (player) => {
-    removeSelectedPlayerFromSquadOptions(player);
+    removePlayerFromSquadOptions(player);
 
     const indexOfMatchingSquadPositionToReplace = bench.findIndex((element) => element.name === "");
     if (indexOfMatchingSquadPositionToReplace !== -1) {
       let updatedBench = bench;
       updatedBench[indexOfMatchingSquadPositionToReplace] = player;
       updatedBench.sort(sortBenchByPositionOrder);
-      // function to sort bench by position
-      setBench(() => [...updatedBench]);
+      redux_add_player_to_bench([...updatedBench]);
     }
   };
 
-  const removeSelectedPlayerFromSquadOptions = (player) => {
+  const removePlayerFromSquadOptions = (player) => {
     // copy of old state
     let availablePlayers = players;
 
@@ -37,17 +106,17 @@ function Main() {
     // then replace the values in that position with the new filtered array
     availablePlayers[player.position] = playerToRemoveFromAvailablePlayers;
 
-    setPlayers(availablePlayers);
+    redux_update_squad_options(availablePlayers);
   };
 
-  const addPlayerBackIntoSquadOptions = (player) => {
+  const addPlayerToSquadOptions = (player) => {
     let availablePlayers = players;
     availablePlayers[player.position].push(player);
-    setPlayers(availablePlayers);
+    redux_update_squad_options(availablePlayers);
   };
 
   const addPlayer = (player) => {
-    let { selections } = currentFormation;
+    let { selections } = formation;
 
     const returnMinusOneIfStartingLineupIsFull = selections
       .map((position) => position.name)
@@ -55,7 +124,7 @@ function Main() {
     if (returnMinusOneIfStartingLineupIsFull === -1) {
       addPlayerToBench(player);
     } else {
-      removeSelectedPlayerFromSquadOptions(player);
+      removePlayerFromSquadOptions(player);
 
       const indexOfMatchingSquadPositionToReplace = selections.findIndex(
         (element) => element.position === player.position && element.name === ""
@@ -63,45 +132,51 @@ function Main() {
 
       if (indexOfMatchingSquadPositionToReplace !== -1) {
         selections[indexOfMatchingSquadPositionToReplace] = player;
-        setCurrentFormation(Object.assign({}, currentFormation, selections));
+        redux_update_formation(Object.assign({}, formation, selections));
       }
     }
   };
 
   const removePlayer = (player) => {
-    let { selections } = currentFormation;
+    let { selections } = formation;
     if (selections.includes(player)) {
       let indexPositionToClear = selections.findIndex((s) => s.name === player.name);
       selections[indexPositionToClear] = { position: player.position, name: "" };
-      setCurrentFormation(Object.assign({}, currentFormation, selections));
-      addPlayerBackIntoSquadOptions(player);
+      redux_update_formation(Object.assign({}, formation, selections));
+      addPlayerToSquadOptions(player);
     } else {
       let indexPositionToClear = bench.findIndex((s) => s.name === player.name);
       bench[indexPositionToClear] = { position: "", name: "" };
-      setBench(() => [...bench]);
-      addPlayerBackIntoSquadOptions(player);
+      redux_add_player_to_bench([...bench]);
+      addPlayerToSquadOptions(player);
     }
   };
 
-  const [currentFormation, setCurrentFormation] = useState(formations[0]);
-
-  const [bench, setBench] = useState(_bench);
-
-  const [players, setPlayers] = useState(_players);
-
   const saveSquad = () => {
-    return console.log("save squad clicked");
+    const _date = new Date();
+    const squadState = {
+      date: _date.toString(),
+      title: formation.title,
+      image: formation.image,
+      positions: formation.positions,
+      selections: formation.selections,
+      bench,
+      players,
+    };
+    redux_save_squad(squadState);
   };
 
   return (
     <React.Fragment>
-      <Title title="ENGLAND SQUAD" />
-      <FormationContainer
-        formation={currentFormation}
-        handleSetCurrentFormation={setCurrentFormation}
+      <SavedSquadsContainer
+        savedSquads={savedSquads}
+        loadSquad={redux_load_squad}
+        clearSquad={redux_clear_squad}
       />
-      <main className="flex">
-        <Squad currentFormation={currentFormation} bench={bench} removePlayer={removePlayer} />
+      <Title title="ENGLAND SQUAD" />
+      <FormationContainer formation={formation} handleSetFormation={redux_update_formation} />
+      <main className="flex flex-column">
+        <Squad formation={formation} bench={bench} removePlayer={removePlayer} />
         <AvailablePlayers players={players} addPlayer={addPlayer} />
       </main>
       <Button title="SAVE SQUAD" onClickFunc={saveSquad} size="large" />
@@ -110,17 +185,39 @@ function Main() {
 }
 
 function App() {
-  const list = useSelector((store) => store.appReducer.list);
-
-  const currentFormation = useSelector((store) => store.appReducer.currentFormation);
+  const formation = useSelector((store) => store.appReducer.formation);
   const bench = useSelector((store) => store.appReducer.bench);
   const players = useSelector((store) => store.appReducer.players);
+  const savedSquads = useSelector((store) => store.appReducer.savedSquads);
   const dispatch = useDispatch();
 
-  const redux_add = (todo) => dispatch(appActions.redux_add(todo));
-  const redux_delete = (id) => dispatch(appActions.redux_delete(id));
+  const redux_add_player_to_bench = (player) =>
+    dispatch(appActions.redux_add_player_to_bench(player));
 
-  const props = { list, currentFormation, bench, players, redux_add, redux_delete };
+  const redux_update_squad_options = (player) =>
+    dispatch(appActions.redux_update_squad_options(player));
+
+  const redux_update_formation = (formation) =>
+    dispatch(appActions.redux_update_formation(formation));
+
+  const redux_save_squad = (squad) => dispatch(appActions.redux_save_squad(squad));
+
+  const redux_load_squad = (squad) => dispatch(appActions.redux_load_squad(squad));
+
+  const redux_clear_squad = () => dispatch(appActions.redux_clear_squad());
+
+  const props = {
+    formation,
+    bench,
+    players,
+    savedSquads,
+    redux_update_squad_options,
+    redux_update_formation,
+    redux_add_player_to_bench,
+    redux_save_squad,
+    redux_load_squad,
+    redux_clear_squad,
+  };
 
   return <Main {...props} />;
 }

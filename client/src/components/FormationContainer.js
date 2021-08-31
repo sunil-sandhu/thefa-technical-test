@@ -2,11 +2,11 @@ import FormationModal from "./FormationModal";
 import Button from "./Button";
 import React, { useState } from "react";
 
-export default function FormationContainer({ formation, handleSetCurrentFormation }) {
+export default function FormationContainer({ formation, handleSetFormation }) {
   const [showModal, setShowModal] = useState(false);
 
-  const updateFormation = (formation) => {
-    handleSetCurrentFormation(formation);
+  const updateFormation = (_formation) => {
+    handleSetFormation(_formation);
     setShowModal(false);
   };
 

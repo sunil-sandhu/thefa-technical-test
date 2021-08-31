@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Player from "./Player";
 
 export default function AvailablePlayers({ players, addPlayer }) {
   return (
@@ -6,59 +6,19 @@ export default function AvailablePlayers({ players, addPlayer }) {
       <p className="text-strong">Currently available</p>
       {/* goalkeepers */}
       {players.G.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
+        <Player player={player} key={player.name} addPlayer={addPlayer} />
       ))}
       {/* defenders */}
       {players.D.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
+        <Player player={player} key={player.name} addPlayer={addPlayer} />
       ))}
       {/* midfielders */}
       {players.M.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
+        <Player player={player} key={player.name} addPlayer={addPlayer} />
       ))}
       {/* forwards */}
       {players.F.map((player) => (
-        <div key={player.name} className="player">
-          <label htmlFor={player.position}>{player.position}</label>
-          <p>{player.name}</p>
-          <Button
-            title="ADD"
-            onClickFunc={() => addPlayer(player)}
-            btnFor={player.name}
-            size="small"
-            color="green"
-          />
-        </div>
+        <Player player={player} key={player.name} addPlayer={addPlayer} />
       ))}
     </section>
   );

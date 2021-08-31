@@ -1,48 +1,62 @@
 import {
   ADD_PLAYER,
   ADD_PLAYER_TO_BENCH,
-  ADD_PLAYER_BACK_INTO_SQUAD_OPTIONS,
-  REMOVE_SELECTED_PLAYER_FROM_SQUAD_OPTIONS,
+  UPDATE_SQUAD_OPTIONS,
   REMOVE_PLAYER,
-  ADD_ITEM,
-  DELETE_ITEM,
+  UPDATE_FORMATION,
+  SAVE_SQUAD,
+  LOAD_SQUAD,
+  CLEAR_SQUAD,
 } from "../actionTypes";
 
-// const redux_add_player = (player) => ({
-
-// })
-
-// const redux_add_player_to_bench = (player) => ({
-
-// })
-
-// const redux_add_player_back_into_squad_options = (player) => ({
-
-// })
-
-// const redux_remove_selected_player_from_squad_options = (player) => ({
-
-// })
-
-// const redux_remove_player = (player) => ({
-
-// })
-
-const redux_add = (todo) => ({
-  type: ADD_ITEM,
-  payload: todo,
+const redux_add_player = (player) => ({
+  type: ADD_PLAYER,
+  payload: player,
 });
 
-const redux_delete = (id) => ({
-  type: DELETE_ITEM,
-  payload: id,
+const redux_add_player_to_bench = (player) => ({
+  type: ADD_PLAYER_TO_BENCH,
+  payload: player,
+});
+
+const redux_update_squad_options = (player) => ({
+  type: UPDATE_SQUAD_OPTIONS,
+  payload: player,
+});
+
+const redux_remove_player = (player) => ({
+  type: REMOVE_PLAYER,
+  payload: player,
+});
+
+const redux_update_formation = (formation) => ({
+  type: UPDATE_FORMATION,
+  payload: formation,
+});
+
+const redux_save_squad = (squad) => ({
+  type: SAVE_SQUAD,
+  payload: squad,
+});
+
+const redux_load_squad = (squad) => ({
+  type: LOAD_SQUAD,
+  payload: squad,
+});
+
+const redux_clear_squad = () => ({
+  type: CLEAR_SQUAD,
 });
 
 const appActions = {
-  redux_add,
-  redux_delete,
+  redux_add_player,
+  redux_add_player_to_bench,
+  redux_update_squad_options,
+  redux_remove_player,
+  redux_update_formation,
+  redux_save_squad,
+  redux_load_squad,
+  redux_clear_squad,
 };
 
 export default appActions;
-
-// rename this file to be based on whichever component needs them

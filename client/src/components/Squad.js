@@ -1,11 +1,11 @@
 import Position from "./Position";
 
-export default function Squad({ currentFormation, bench, removePlayer }) {
+export default function Squad({ formation, bench, removePlayer }) {
   return (
     <section className="col">
       <p className="text-strong">Starting lineup</p>
       <div data-testid="starting-lineup" className="">
-        {currentFormation.selections.map((player, index) => (
+        {formation.selections.map((player, index) => (
           <Position key={index} player={player} removePlayer={removePlayer} />
         ))}
       </div>
