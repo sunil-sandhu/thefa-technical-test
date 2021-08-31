@@ -1,8 +1,16 @@
-### Useful resources
+# Squad Selector
 
-- hosting a site on GCP: https://cloud.google.com/appengine/docs/standard/nodejs/building-app
+### Build your own England squad from a pool of eligible players.
 
-Things I would have done if the task allowed for more time.
+#### Built with:
+
+- React
+- Redux
+- Node.js
+- Express
+- Running on GCP
+
+#### Things I would have done if the task allowed for more time.
 
 - Add TypeScript
 - Include player statistics (at both national and club level)
@@ -20,3 +28,5 @@ Things I would have done if the task allowed for more time.
 - Would have tidied up the order of styles in index.css
 - May have used CSS modules and variables
 - May have saved formations in a database rather than being saved in local storage
+
+**Thank you Renu and the team for taking the time to read and review this project.**
