@@ -1,4 +1,6 @@
-### Resources used so far
+### Useful resources
+
+- hosting a site on GCP: https://cloud.google.com/appengine/docs/standard/nodejs/building-app
 
 - Redux Persist https://github.com/rt2zz/redux-persist
 
@@ -19,3 +21,5 @@ Things I would have done if the task allowed for more time.
   optimised more towards tablet and desktop, but not so much for mobile.
 - would have shown the starting line up in their formation positions, and would have allowed for
   players to be moved around positions eg. moving an LCB to RCB, an LW to RW etc.
+- if a position is full in the starting lineup, add subsequent selections in the same position to be
+  added to the bench.

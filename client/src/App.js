@@ -11,48 +11,79 @@ import { sortBenchByPositionOrder } from "./utils/sortBenchByPositionOrder";
 
 function AvailablePlayers({ players, addPlayer }) {
   return (
-    <React.Fragment>
+    <section className="col">
       <p className="text-strong">Currently available</p>
-      <p className="text-strong">Goalkeepers</p>
+      {/* <p className="text-strong">Goalkeepers</p> */}
       {players.G.map((player) => (
         <div key={player.name} className="player">
+          <label htmlFor={player.position}>{player.position}</label>
           <p>{player.name}</p>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
+          <Button
+            title="ADD"
+            onClickFunc={() => addPlayer(player)}
+            btnFor={player.name}
+            size="small"
+            color="green"
+          />
         </div>
       ))}
-      <p className="text-strong">Defenders</p>
+      {/* <p className="text-strong">Defenders</p> */}
       {players.D.map((player) => (
         <div key={player.name} className="player">
+          <label htmlFor={player.position}>{player.position}</label>
           <p>{player.name}</p>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
+          <Button
+            title="ADD"
+            onClickFunc={() => addPlayer(player)}
+            btnFor={player.name}
+            size="small"
+            color="green"
+          />
         </div>
       ))}
-      <p className="text-strong">Midfielders</p>
+      {/* <p className="text-strong">Midfielders</p> */}
       {players.M.map((player) => (
         <div key={player.name} className="player">
+          <label htmlFor={player.position}>{player.position}</label>
           <p>{player.name}</p>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
+          <Button
+            title="ADD"
+            onClickFunc={() => addPlayer(player)}
+            btnFor={player.name}
+            size="small"
+            color="green"
+          />
         </div>
       ))}
-      <p className="text-strong">Forwards</p>
+      {/* <p className="text-strong">Forwards</p> */}
       {players.F.map((player) => (
         <div key={player.name} className="player">
+          <label htmlFor={player.position}>{player.position}</label>
           <p>{player.name}</p>
-          <Button title="Add" onClickFunc={() => addPlayer(player)} btnFor={player.name} />
+          <Button
+            title="ADD"
+            onClickFunc={() => addPlayer(player)}
+            btnFor={player.name}
+            size="small"
+            color="green"
+          />
         </div>
       ))}
-    </React.Fragment>
+    </section>
   );
 }
 
 function Position({ player, removePlayer }) {
   return (
-    <div className="player">
+    <div className="player" data-testid={player.name}>
       <label htmlFor={player.position}>{player.position}</label>
-      <p data-testid={player.name}>{player.name}</p>
+      <p>{player.name}</p>
       {player.name && (
-        <button data-player-to-remove={player.name} onClick={() => removePlayer(player)}>
-          Remove
+        <button
+          data-player-to-remove={player.name}
+          onClick={() => removePlayer(player)}
+          className="button button-small red">
+          REMOVE
         </button>
       )}
     </div>
@@ -61,20 +92,20 @@ function Position({ player, removePlayer }) {
 
 function ActiveSquad({ currentFormation, bench, removePlayer }) {
   return (
-    <React.Fragment>
+    <section className="col">
       <p className="text-strong">Starting lineup</p>
-      <section className="">
+      <div data-testid="starting-lineup" className="">
         {currentFormation.selections.map((player, index) => (
           <Position key={index} player={player} removePlayer={removePlayer} />
         ))}
-      </section>
+      </div>
       <p className="text-strong">Bench</p>
-      <section className="">
+      <div className="">
         {bench.map((player, index) => (
           <Position key={index} player={player} removePlayer={removePlayer} />
         ))}
-      </section>
-    </React.Fragment>
+      </div>
+    </section>
   );
 }
 
@@ -167,10 +198,15 @@ function Main() {
         formation={currentFormation}
         handleSetCurrentFormation={setCurrentFormation}
       />
-      <ActiveSquad currentFormation={currentFormation} bench={bench} removePlayer={removePlayer} />
-      <AvailablePlayers players={players} addPlayer={addPlayer} />
-
-      <Button title="SAVE SQUAD" onClickFunc={saveSquad} />
+      <main className="flex">
+        <ActiveSquad
+          currentFormation={currentFormation}
+          bench={bench}
+          removePlayer={removePlayer}
+        />
+        <AvailablePlayers players={players} addPlayer={addPlayer} />
+      </main>
+      <Button title="SAVE SQUAD" onClickFunc={saveSquad} size="large" />
     </React.Fragment>
   );
 }

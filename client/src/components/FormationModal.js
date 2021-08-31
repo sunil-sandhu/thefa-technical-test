@@ -6,6 +6,9 @@ export default function FormationModal(props) {
       <div className="modal-content">
         <div className="modal-header">
           <h4 className="modal-title">{props.title}</h4>
+          <button onClick={props.onCancelFunc} className="button button-small">
+            CANCEL
+          </button>
         </div>
         <div className="modal-body">
           {formations.map((formation) => (
