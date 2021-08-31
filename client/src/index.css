@@ -120,6 +120,10 @@ p.current-formation {
   margin: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
 .button {
   border-radius: 5px;
   border: 1px solid #707070;

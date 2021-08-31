@@ -17,3 +17,6 @@ Things I would have done if the task allowed for more time.
 - I would have segmented some of the Redux reducers and actions further.
 - The Redux state could have been segmented further. A lot of data sits inside of the 'formation'
   key which I do not like.
+- Would have tidied up the order of styles in index.css
+- May have used CSS modules and variables
+- May have saved formations in a database rather than being saved in local storage

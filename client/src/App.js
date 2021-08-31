@@ -7,68 +7,7 @@ import FormationContainer from "./components/FormationContainer";
 import { sortBenchByPositionOrder } from "./utils/sortBenchByPositionOrder";
 import Squad from "./components/Squad";
 import AvailablePlayers from "./components/AvailablePlayers";
-
-function SavedSquadModal({ title, showModal, savedSquads, onClickFunc, onCancelFunc }) {
-  return (
-    <div className={showModal ? "modal modal-open" : "modal"}>
-      <div className="modal-content">
-        <div className="modal-header">
-          <h4 className="modal-title">{title}</h4>
-          <button onClick={onCancelFunc} className="button button-small grey">
-            CANCEL
-          </button>
-        </div>
-        <div className="modal-body">
-          {savedSquads.length > 0 &&
-            savedSquads.map((squad) => (
-              <button
-                key={squad.date}
-                className="button button-small grey"
-                onClick={() => onClickFunc(squad)}>
-                <p>
-                  <span className="bold">{squad.title}</span>: Created on {squad.date}
-                </p>
-              </button>
-            ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SavedSquadsContainer({ savedSquads, loadSquad, clearSquad }) {
-  const [showModal, setShowModal] = useState(false);
-
-  const handleLoadSquad = (formation) => {
-    loadSquad(formation);
-    setShowModal(false);
-  };
-
-  const handleClearSquad = () => {
-    console.log("clearing squad");
-    clearSquad();
-  };
-
-  return (
-    <aside>
-      <div className="flex space-between">
-        {savedSquads.length > 0 ? (
-          <Button title="Saved squads" onClickFunc={() => setShowModal(true)} size="small" />
-        ) : (
-          <span></span>
-        )}
-        <Button title="Clear squad" onClickFunc={handleClearSquad} size="small" />
-      </div>
-      <SavedSquadModal
-        title="LOAD SQUAD"
-        showModal={showModal}
-        onClickFunc={handleLoadSquad}
-        onCancelFunc={() => setShowModal(false)}
-        savedSquads={savedSquads}
-      />
-    </aside>
-  );
-}
+import SavedSquadsContainer from "./components/SavedSquadContainer";
 
 function Main({
   formation,
@@ -152,6 +91,8 @@ function Main({
     }
   };
 
+  const [isSquadSaved, setIsSquadSaved] = useState(false);
+
   const saveSquad = () => {
     const _date = new Date();
     const squadState = {
@@ -164,6 +105,10 @@ function Main({
       players,
     };
     redux_save_squad(squadState);
+    setIsSquadSaved(true);
+    setTimeout(() => {
+      setIsSquadSaved(false);
+    }, 3000);
   };
 
   return (
@@ -179,7 +124,11 @@ function Main({
         <Squad formation={formation} bench={bench} removePlayer={removePlayer} />
         <AvailablePlayers players={players} addPlayer={addPlayer} />
       </main>
-      <Button title="SAVE SQUAD" onClickFunc={saveSquad} size="large" />
+      {isSquadSaved ? (
+        <Button title="SAVED" size="large" color="green" />
+      ) : (
+        <Button title="SAVE SQUAD" onClickFunc={saveSquad} size="large" />
+      )}
     </React.Fragment>
   );
 }
